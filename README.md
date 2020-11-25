@@ -25,7 +25,7 @@ echo '{"username": "jjjj", "email": "j@gmail.com"}' | http POST localhost:9000/u
 https://deviq.com/repository-pattern/
 
 ## TODO
-- Setup auth with secure social
+- Setup auth with silhouette 
 
 ## Future TODO
 - Add bootstrap during build process instead of using it from their CDN: https://ics-software-engineering.github.io/play-example-bootstrap/

@@ -9,7 +9,6 @@ lazy val root = (project in file("."))
       "com.typesafe.play" %% "play-slick" % "5.0.0",
       "com.typesafe.play" %% "play-slick-evolutions" % "5.0.0",
       "com.h2database" % "h2" % "1.4.199",
-      "ws.securesocial" %% "securesocial" % "2.1.4",
       specs2 % Test
     ),
     scalacOptions ++= Seq(
