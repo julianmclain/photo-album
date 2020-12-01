@@ -8,7 +8,7 @@ import play.api.db.slick.DatabaseConfigProvider
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
-final case class Album(id: Long, title: String, description: String)
+final case class Album(id: Option[Long], title: String, description: String)
 
 @Singleton
 final class AlbumRepository @Inject() (
@@ -21,12 +21,12 @@ final class AlbumRepository @Inject() (
   import dbConfig._
   import profile.api._
 
-  private class AlbumTable(tag: Tag) extends Table[Album](tag, "album") {
+  private class AlbumTable(tag: Tag) extends Table[Album](tag, "albums") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def title = column[String]("title")
     def description = column[String]("description")
 
-    def * = (id, title, description).mapTo[Album]
+    def * = (id.?, title, description).mapTo[Album]
   }
 
   private val albums = TableQuery[AlbumTable]
@@ -36,7 +36,7 @@ final class AlbumRepository @Inject() (
       (albums.map(a => (a.title, a.description))
         returning albums.map(_.id)
         into ((titleDescription, id) =>
-          Album(id, titleDescription._1, titleDescription._2)
+          Album(Some(id), titleDescription._1, titleDescription._2)
         )) += (title, description)
     }
 

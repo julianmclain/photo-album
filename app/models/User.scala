@@ -12,7 +12,7 @@ import scala.concurrent.Future
 /**
   * Case class representing a row in the users table
   */
-final case class User(id: Long, username: String, email: String)
+final case class User(id: Option[Long], username: String, email: String)
 
 object User {
   implicit val format = Json.format[User]
@@ -40,7 +40,9 @@ final class UserRepository @Inject() (
     def username = column[String]("username")
     def email = column[String]("email")
 
-    def * = (id, username, email) <> ((User.apply _).tupled, User.unapply)
+    // If you have a companion object to your case class you can't use the `mapTo[myCaseClass]` macro
+    // https://queirozf.com/entries/slick-error-message-value-tupled-is-not-a-member-of-object
+    def * = (id.?, username, email) <> ((User.apply _).tupled, User.unapply)
   }
 
   /**
@@ -53,14 +55,13 @@ final class UserRepository @Inject() (
       users.filter(_.id === id).result.head
     }
 
-  def create(username: String, email: String): Future[User] =
-    db.run {
-      (users.map(p => (p.username, p.email))
-        returning users.map(_.id)
-        into ((usernameEmail, id) =>
-          User(id, usernameEmail._1, usernameEmail._2)
-        )) += (username, email)
-    }
+  def create(user: User): Future[User] = {
+    // Inspired by https://stackoverflow.com/a/58081439/14444354 and iterable code
+    val insertQuery =
+      users returning users.map(_.id) into ((_, id) => user.copy(id = Some(id)))
+    val action = insertQuery += user
+    db.run(action)
+  }
 
   def list: Future[Seq[User]] =
     db.run {

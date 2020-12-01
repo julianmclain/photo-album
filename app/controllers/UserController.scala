@@ -1,6 +1,7 @@
 package controllers
 
 import models.UserRepository
+import models.User
 import models.api.ApiUser
 import javax.inject._
 import play.api.libs.json.JsError
@@ -12,7 +13,8 @@ import scala.concurrent.ExecutionContext
 @Singleton
 class UserController @Inject() (
     val controllerComponents: ControllerComponents,
-    val usersRepo: UserRepository
+    val usersRepo: UserRepository,
+    val loginTemplate: views.html.login
 )(implicit ec: ExecutionContext)
     extends BaseController {
 
@@ -31,16 +33,21 @@ class UserController @Inject() (
     }
 
   def createUser =
-    Action(parse.json) { implicit request =>
-      val userResult = request.body.validate[ApiUser]
-      userResult.fold(
-        errors => {
-          BadRequest(Json.obj("message" -> JsError.toJson(errors)))
-        },
-        user => {
-          usersRepo.create(user.username, user.email)
-          Created(Json.obj("message" -> "user created"))
-        }
-      )
+    Action.async(parse.json) { implicit request =>
+      usersRepo.create(User(None, "hi", "email")).map { dbUser =>
+        Ok(Json.toJson(dbUser))
+      }
+    //      val userResult = request.body.validate[ApiUser]
+//      userResult.fold(
+//        errors => {
+//          BadRequest(Json.obj("message" -> JsError.toJson(errors)))
+//        },
+//        user => {
+//          usersRepo.create(User(None, user.username, user.email)).map {
+//            dbUser => println(dbUser)
+//          }
+//          Created(Json.obj("message" -> "user created"))
+//        }
+//      )
     }
 }

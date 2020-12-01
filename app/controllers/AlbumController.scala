@@ -1,6 +1,8 @@
 package controllers
 
 import javax.inject._
+import models.Album
+import models.User
 import play.api.mvc._
 
 import scala.concurrent.ExecutionContext
@@ -10,9 +12,9 @@ import scala.concurrent.ExecutionContext
   * application's home page.
   */
 @Singleton
-class HomeController @Inject() (
+class AlbumController @Inject() (
     val controllerComponents: ControllerComponents,
-    val indexTemplate: views.html.index
+    val albumsTemplate: views.html.albums
 )(implicit ec: ExecutionContext)
     extends BaseController {
 
@@ -23,8 +25,13 @@ class HomeController @Inject() (
     * will be called when the application receives a `GET` request with
     * a path of `/`.
     */
-  def index =
+  def albumsGet =
     Action { implicit request: Request[AnyContent] =>
-      Ok(indexTemplate())
+      Ok(
+        albumsTemplate(
+          User(Some(1), "userme", "hi@aol.com"),
+          List(Album(None, "title of album", "cool description"))
+        )
+      )
     }
 }
