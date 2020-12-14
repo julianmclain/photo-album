@@ -1,0 +1,13 @@
+@this(main: views.html.main)
+@(album: Album)
+
+@pageTitle = @{album.title}
+@navTitle = @{Some("Albums")}
+
+@main(pageTitle) {
+    <div class="container">
+        <h1 class="display-4">@album.title</h1>
+        <p>@album.description</p>
+    </div>
+}
+

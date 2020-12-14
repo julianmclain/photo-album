@@ -31,14 +31,16 @@ final class AlbumRepository @Inject() (
 
   private val albums = TableQuery[AlbumTable]
 
-  def create(title: String, description: String): Future[Album] =
-    db.run {
-      (albums.map(a => (a.title, a.description))
-        returning albums.map(_.id)
-        into ((titleDescription, id) =>
-          Album(Some(id), titleDescription._1, titleDescription._2)
-        )) += (title, description)
-    }
+  def findById(id: Long): Future[Option[Album]] =
+    db.run(albums.filter(_.id === id).result.headOption)
+
+  def create(album: Album): Future[Album] = {
+    val insertQuery = albums returning albums.map(_.id) into ((_, id) =>
+      album.copy(id = Some(id))
+    )
+    val action = insertQuery += album
+    db.run(action)
+  }
 
   def list: Future[Seq[Album]] =
     db.run {

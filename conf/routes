@@ -3,7 +3,7 @@
 # https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
 
-GET     /                           controllers.HomeController.index
+GET     /                           controllers.IndexController.index
 
 # users
 GET     /users/:id                  controllers.UserController.getUser(id: Long)
@@ -11,7 +11,12 @@ GET     /users                      controllers.UserController.getUsers
 POST    /users                      controllers.UserController.createUser
 
 # Albums
-GET     /albums                     controllers.AlbumController.albumsGet
+GET     /albums                     controllers.AlbumController.viewAlbums
+GET     /albums/new                 controllers.AlbumController.createAlbum
+POST    /albums/save                controllers.AlbumController.saveAlbum
+GET     /albums/:id                 controllers.AlbumController.viewAlbum(id: Long)
+GET     /albums/:id/edit            controllers.AlbumController.editAlbum(id: Long)
+POST    /albums/:id/delete          controllers.AlbumController.deleteAlbum(id: Long)
 
 
 # Map static resources from the /public folder to the /assets URL path

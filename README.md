@@ -35,8 +35,8 @@ echo '{"username": "jjjj", "email": "j@gmail.com"}' | http POST localhost:9000/u
 https://deviq.com/repository-pattern/
 
 ## TODO
+- flash messages
 - v1 views
-    - GET / redirects to /albums
     - GET /albums shows the albums you're a member of and ability to create a new album
     - POST /albums creates a new album
     - GET /albums/:id shows a single album

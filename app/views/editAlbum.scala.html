@@ -1,0 +1,23 @@
+@this(main: views.html.main, test: views.html.partials.test)
+@(albumForm: Form[AlbumData])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+
+@implicitFieldConstructor = @{ b4.vertical.fieldConstructor() }
+
+@{val foo = true}
+
+@pageTitle = @{"Edit Album"}
+@navTitle = @{Some("Albums")}
+
+@main(pageTitle) {
+    <div class="container">
+    @b4.form(action = routes.AlbumController.saveAlbum()) {
+        @helper.CSRF.formField
+        @b4.text(albumForm("title"), Symbol("_label") -> "Title")
+        @b4.textarea(albumForm("description"), Symbol("_label") -> "Description")
+        @b4.buttonType("submit", Symbol("class") -> "btn btn-primary") {
+            Create new Album
+        }
+    }
+    </div>
+    @test(albumForm)
+}

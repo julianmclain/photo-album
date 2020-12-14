@@ -11,12 +11,15 @@
       <p>photo-album was designed to help you stay connected to your favorite memories with friends and family.</p>
       <hr class="my-4">
       <p>Why not start a new album?</p>
-      <a class="btn btn-primary btn-lg" href="/todo" role="button">Create album</a>
+      <a class="btn btn-primary btn-lg" href=@routes.AlbumController.createAlbum() role="button">Create album</a>
     </div>
   </div>
   <ul>
   @for(album <- albums) {
-    <li>@album.title - @album.description</li>
+    <li>
+      <a href=@routes.AlbumController.viewAlbum(album.id.get)>@album.title - @album.description</a>
+      <a href=@routes.AlbumController.editAlbum(album.id.get)><i class="ml-2 fa fa-pencil-alt"></i></a>
+    </li>
   }
   </ul>
 }
