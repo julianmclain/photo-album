@@ -1,0 +1,12 @@
+@this()
+
+@(albumId: Long)(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+
+@implicitFieldConstructor = @{ b4.vertical.fieldConstructor() }
+
+@b4.form(action = routes.AlbumController.deleteAlbum(albumId)) {
+    @helper.CSRF.formField
+    @b4.buttonType("submit", Symbol("class") -> "btn btn-primary") {
+      <i class="ml-2 fa fa-trash"></i>
+    }
+}

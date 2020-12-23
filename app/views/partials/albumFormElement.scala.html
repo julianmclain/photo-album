@@ -1,0 +1,25 @@
+@this()
+
+@(albumForm: Form[AlbumData], buttonText: String)(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+
+@implicitFieldConstructor = @{ b4.vertical.fieldConstructor() }
+
+@if(albumForm.hasGlobalErrors) {
+    <ul>
+    @for(error <- albumForm.globalErrors) {
+        <li>@error.format</li>
+    }
+    </ul>
+}
+  @for(error <- albumForm.errors) {
+    <p>@error.format</p>
+  }
+@b4.form(action = routes.AlbumController.saveAlbum()) {
+    @helper.CSRF.formField
+    @b4.hidden(albumForm("id"), Symbol("_error") -> albumForm.error("id"))
+    @b4.text(albumForm("title"), Symbol("_label") -> "Title", Symbol("_error") -> albumForm.error("title"))
+    @b4.textarea(albumForm("description"), Symbol("_label") -> "Description", Symbol("_error") -> albumForm.error("description"))
+    @b4.buttonType("submit", Symbol("class") -> "btn btn-primary") {
+      @buttonText
+    }
+}

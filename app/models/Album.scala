@@ -42,6 +42,22 @@ final class AlbumRepository @Inject() (
     db.run(action)
   }
 
+  def update(album: Album): Future[Int] = {
+    val query = for {
+      a <- albums if a.id === album.id
+    } yield a
+
+    db.run(query.update(album))
+  }
+
+  def deleteById(id: Long): Future[Int] = {
+    val query = for {
+      a <- albums if a.id === id
+    } yield a
+
+    db.run(query.delete)
+  }
+
   def list: Future[Seq[Album]] =
     db.run {
       albums.result

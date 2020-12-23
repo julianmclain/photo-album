@@ -34,22 +34,33 @@ echo '{"username": "jjjj", "email": "j@gmail.com"}' | http POST localhost:9000/u
 
 https://deviq.com/repository-pattern/
 
+## Current
+
+- implementing delete album functionality
+
 ## TODO
 - flash messages
-- v1 views
+- Tracing
+- v1 Albums 
     - GET /albums shows the albums you're a member of and ability to create a new album
     - POST /albums creates a new album
     - GET /albums/:id shows a single album
+    
+- v2 Photos
+    - think about how this should work
+    - GET /albums/:id should show photos
     - GET /albums/:id/photos/:id
     - POST /albums/:id/photos/:id
     
-- v2 views
+- v3 
     - create the flow for inviting someone and seeing / accepting / declining pending invites
     
 - Finish a basic DB layer
     - Nice to have: A Base Table trait with methods like findById, create, update, etc... Use the Iterable
      `TableWithIdQuery` for inspiration. You might need to read the Scala for the Impatient chapter on types in order
       to understand what's going on in that class. Also check out https://manuel.bernhardt.io/2013/07/08/crud-trait-for-slick-models-in-the-play-framework/
+    - https://users.scala-lang.org/t/using-slick-3-2-0-provides-classic-example-of-why-implicit-drives-people-out-of
+    -scala/297/24
 
 ## Future TODO
 - Setup auth with silhouette 

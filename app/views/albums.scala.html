@@ -1,5 +1,5 @@
-@this(main: views.html.main)
-@(user: User, albums: Seq[Album])
+@this(main: views.html.main, deleteAlbumElement: views.html.partials.deleteAlbumElement)
+@(user: User, albums: Seq[Album])(implicit requestHeader: RequestHeader, messagesProvider: MessagesProvider)
 
 @pageTitle = @{"Albums"}
 @navTitle = @{Some("Albums")}
@@ -19,6 +19,7 @@
     <li>
       <a href=@routes.AlbumController.viewAlbum(album.id.get)>@album.title - @album.description</a>
       <a href=@routes.AlbumController.editAlbum(album.id.get)><i class="ml-2 fa fa-pencil-alt"></i></a>
+      @deleteAlbumElement(album.id.get)
     </li>
   }
   </ul>
